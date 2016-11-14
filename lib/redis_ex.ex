@@ -9,12 +9,12 @@ defmodule RedisEx do
     import Supervisor.Spec, warn: false
 
     # Get the redis_ex configuration
-    redis_hostname = Application.get_env(:redis_ex, :redis_hostname)
-    redis_port = Application.get_env(:redis_ex, :redis_port)
+    hostname = Application.get_env(:redis_ex, :hostname)
+    port = Application.get_env(:redis_ex, :port)
 
     # Create our Redix worker pool
     redis_workers = for i <- 0..@worker_count do
-      worker(Redix, ["redis://#{redis_hostname}:#{redis_port}", [name: :"redix_#{i}"]], id: {Redix, i})
+      worker(Redix, ["redis://#{hostname}:#{port}", [name: :"redix_#{i}"]], id: {Redix, i})
     end
 
     # Start the worker pool
