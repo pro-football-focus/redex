@@ -18,7 +18,7 @@ defmodule RedisEx do
     end
 
     # Start the worker pool
-    {:ok, _pid} = Supervisor.start_link(redis_workers, strategy: :one_for_one, name: Phoenix.Supervisor)
+    Supervisor.start_link(redis_workers, strategy: :one_for_one, name: Phoenix.Supervisor)
   end
 
   # Select a random worker from the pool
