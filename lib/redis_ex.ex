@@ -31,4 +31,20 @@ defmodule RedisEx do
   def flush() do
     Redix.command!(random_worker, ["FLUSHDB"])
   end
+
+  @default_expires 600
+
+  # Read-through cache function
+  def read_through(key, func, expires \\ @default_expires) do
+    case RedisEx.Item.get(key) do
+      nil ->
+        case func.() do
+          nil -> nil
+          value ->
+            RedisEx.Item.set(key, value, expires)
+            value
+        end
+      value -> value
+    end
+  end
 end

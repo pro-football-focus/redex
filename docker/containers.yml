@@ -13,8 +13,6 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
-    ports:
-      - "43512:6379"
 
 volumes:
   redis_data:

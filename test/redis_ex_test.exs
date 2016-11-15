@@ -8,25 +8,36 @@ defmodule RedisExTest do
   end
 
   test "can flush cache items" do
-    RedisEx.Key.set("foo", "foo")
-    assert RedisEx.Key.get("foo") == "foo"
+    RedisEx.Item.set("foo", "foo")
+    assert RedisEx.Item.get("foo") == "foo"
     assert RedisEx.flush == "OK"
-    assert RedisEx.Key.get("foo") == nil
+    assert RedisEx.Item.get("foo") == nil
   end
 
   test "can set cache item" do
-    assert RedisEx.Key.set("bar", "bar") == true
+    assert RedisEx.Item.set("bar", "bar") == true
   end
 
   test "can set an expiring cache item" do
-    RedisEx.Key.set("baz", "baz", 1)
-    assert RedisEx.Key.get("baz") == "baz"
+    RedisEx.Item.set("baz", "baz", 1)
+    assert RedisEx.Item.get("baz") == "baz"
     :timer.sleep(1500)
-    assert RedisEx.Key.get("baz") == nil
+    assert RedisEx.Item.get("baz") == nil
   end
 
   test "can get cache item" do
-    RedisEx.Key.set("baz", "baz")
-    assert RedisEx.Key.get("baz") == "baz"
+    RedisEx.Item.set("baz", "baz")
+    assert RedisEx.Item.get("baz") == "baz"
+  end
+
+  test "read-through function returns function value when not cached" do
+    value = RedisEx.read_through("foo", fn -> 1 end)
+    assert value == 1
+  end
+
+  test "read-through function returns cached value when cached" do
+    RedisEx.Item.set("foo", 2)
+    value = RedisEx.read_through("foo", fn -> 1 end)
+    assert value == 2
   end
 end

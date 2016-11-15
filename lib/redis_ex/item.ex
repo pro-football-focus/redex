@@ -1,4 +1,4 @@
-defmodule RedisEx.Key do
+defmodule RedisEx.Item do
 
   # Get a key from the Redis server using a random worker
   def get(key) do
