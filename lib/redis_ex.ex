@@ -22,24 +22,24 @@ defmodule RedisEx do
   end
 
   # Select a random worker from the pool
-  def random_worker do
+  def random_worker() do
     random = rem(System.unique_integer([:positive]), @worker_count)
     :"redix_#{random}"
   end
 
   # Flush items from the currently selected Redis server database
   def flush() do
-    Redix.command!(random_worker, ["FLUSHDB"])
+    Redix.command!(random_worker(), ["FLUSHDB"])
   end
 
   # Readable cache times
-  def cache_1_day, do: 60*60*24
-  def cache_1_hour, do: 60*60
-  def cache_10_minutes, do: 60*10
-  def cache_1_minute, do: 60
+  def cache_1_day(), do: 60*60*24
+  def cache_1_hour(), do: 60*60
+  def cache_10_minutes(), do: 60*10
+  def cache_1_minute(), do: 60
 
   # Read-through cache function
-  def read_through(key, func, expires \\ cache_10_minutes) do
+  def read_through(key, func, expires \\ cache_10_minutes()) do
     case RedisEx.Item.get(key) do
       nil ->
         case func.() do

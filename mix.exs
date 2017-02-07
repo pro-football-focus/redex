@@ -3,7 +3,7 @@ defmodule RedisEx.Mixfile do
 
   def project do
     [app: :redis_ex,
-     version: "0.1.6",
+     version: "0.2.0",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -28,6 +28,6 @@ defmodule RedisEx.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:redix, "~> 0.4.0"}]
+    [{:redix, "~> 0.5.1"}]
   end
 end
